@@ -1,3 +1,2 @@
 hermes_python>=0.1
-apa102-pi
 spidev
