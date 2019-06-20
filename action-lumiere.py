@@ -138,10 +138,9 @@ class Pixels:
         self.dev.show()
 
 
-pixels = Pixels()
-
 
 def intent_received(hermes, intent_message):
+    pixels = Pixels()
     print()
     print(intent_message.intent.intent_name)
     pixels.wakeup()
