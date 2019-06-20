@@ -14,15 +14,20 @@ class Pixels:
         self.colors = [0] * 3 * self.PIXELS_N
         self.dev = apa102.APA102(num_led=self.PIXELS_N)
 
-
-
-    def intent_received(self, hermes, intent_message):
-        print()
-        print(intent_message.intent.intent_name)
+    def allume(self):
         colors = self.colors
         self.dev.set_pixel(3, int(colors[3 * 3]), int(colors[3 * 3 + 1]), int(colors[3 * 3 + 2]))
-        print()
 
 
-    with Hermes(MQTT_ADDR) as h:
-        h.subscribe_intents(intent_received).start()
+pixels = Pixels()
+
+
+def intent_received(hermes, intent_message):
+    print()
+    print(intent_message.intent.intent_name)
+    pixels.allume()
+    print()
+
+
+with Hermes(MQTT_ADDR) as h:
+    h.subscribe_intents(intent_received).start()
