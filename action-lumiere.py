@@ -141,8 +141,10 @@ def intent_received(hermes, intent_message):
     print()
     print(intent_message.intent.intent_name)
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
+        hermes.publish_end_session(intent_message.session_id, "J'allume la lumiere")
         pixels.wakeup()
     if intent_message.intent.intent_name == "bluevert:lightsTurnOff":
+        hermes.publish_end_session(intent_message.session_id, "J'eteind la lumiere")
         pixels.off()
     print()
 
