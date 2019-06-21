@@ -7,19 +7,17 @@ LED light pattern like Google Home
 import apa102
 import time
 import threading
+
 try:
     import queue as Queue
 except ImportError:
     import Queue as Queue
-
 
 from hermes_python.hermes import Hermes
 
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
-
-
 
 
 class Pixels:
@@ -133,17 +131,19 @@ class Pixels:
 
     def write(self, colors):
         for i in range(self.PIXELS_N):
-            self.dev.set_pixel(i, int(colors[3*i]), int(colors[3*i + 1]), int(colors[3*i + 2]))
+            self.dev.set_pixel(i, int(colors[3 * i]), int(colors[3 * i + 1]), int(colors[3 * i + 2]))
 
         self.dev.show()
-
 
 
 def intent_received(hermes, intent_message):
     pixels = Pixels()
     print()
     print(intent_message.intent.intent_name)
-    pixels.wakeup()
+    if intent_message.intent.intent_name == "TomTom830:lightsSet":
+        pixels.wakeup()
+    if intent_message.intent.intent_name == "bluevert:lightsTurnOff":
+        pixels.off()
     print()
 
 
