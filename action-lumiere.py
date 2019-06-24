@@ -7,6 +7,7 @@ LED light pattern like Google Home
 import apa102
 import time
 import threading
+import requests
 
 try:
     import queue as Queue
@@ -146,6 +147,10 @@ def intent_received(hermes, intent_message):
     if intent_message.intent.intent_name == "bluevert:lightsTurnOff":
         hermes.publish_end_session(intent_message.session_id, "J'éteind la lumière")
         pixels.off()
+    if intent_message.intent.intent_name == "TomTom830:sendRequest":
+        r = requests.get("http://linuxfr.org/")
+        print(r.text)
+        hermes.publish_end_session(intent_message.session_id, "J'envois une requête get")
     print()
 
 
