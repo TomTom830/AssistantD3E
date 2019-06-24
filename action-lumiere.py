@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-
+# coding: utf-8
 """
 LED light pattern like Google Home
 """
@@ -144,7 +144,7 @@ def intent_received(hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "J'allume la lumiere")
         pixels.wakeup()
     if intent_message.intent.intent_name == "bluevert:lightsTurnOff":
-        hermes.publish_end_session(intent_message.session_id, "J'eteind la lumiere")
+        hermes.publish_end_session(intent_message.session_id, "J'éteind la lumiere")
         pixels.off()
     print()
 
