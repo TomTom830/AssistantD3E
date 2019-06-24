@@ -142,15 +142,15 @@ def intent_received(hermes, intent_message):
     print()
     print(intent_message.intent.intent_name)
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
-        hermes.publish_end_session(intent_message.session_id, "J'allume la lumière")
+        hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
         pixels.wakeup()
     if intent_message.intent.intent_name == "bluevert:lightsTurnOff":
-        hermes.publish_end_session(intent_message.session_id, "J'éteind la lumière")
+        hermes.publish_end_session(intent_message.session_id, u"J'éteind la lumière")
         pixels.off()
     if intent_message.intent.intent_name == "TomTom830:sendRequest":
         r = requests.get("http://linuxfr.org/")
-        print(r.text)
-        hermes.publish_end_session(intent_message.session_id, "J'envois une requête get")
+        print(r.status_code)
+        hermes.publish_end_session(intent_message.session_id, u"J'envois une requête get")
     print()
 
 
