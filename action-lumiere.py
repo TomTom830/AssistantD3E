@@ -141,6 +141,7 @@ def intent_received(hermes, intent_message):
     pixels = Pixels()
     print()
     print(intent_message.intent.intent_name)
+    print(intent_message.slots.window_devices[0].slot_value.value.value)
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
         hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
         pixels.wakeup()
@@ -152,6 +153,7 @@ def intent_received(hermes, intent_message):
         print(r.status_code)
         hermes.publish_end_session(intent_message.session_id, u"J'envois une requête get")
     print()
+
 
 
 with Hermes(MQTT_ADDR) as h:
