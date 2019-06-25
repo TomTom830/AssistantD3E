@@ -142,6 +142,18 @@ def intent_received(hermes, intent_message):
     print()
     print(intent_message.intent.intent_name)
     print(intent_message.slots.window_devices[0].slot_value.value.value)
+    print(intent_message.slots.state[0].slot_value.value.value)
+
+    if intent_message.intent.intent_name == "valf:OpenCoverJeedom":
+        if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
+            if intent_message.slots.state:
+                if intent_message.slots.state[0].slot_value.value.value == u"à moitié":
+                    r = requests.get("http://linuxfr.org/")
+                if intent_message.slots.state[0].slot_value.value.value == u"trois quart":
+                    r = requests.get("http://linuxfr.org/")
+            else:
+                r = requests.get("http://linuxfr.org/")
+
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
         hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
         pixels.wakeup()
