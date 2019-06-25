@@ -3,7 +3,6 @@
 """
 LED light pattern like Google Home
 """
-
 import apa102
 import time
 import threading
@@ -142,14 +141,15 @@ def intent_received(hermes, intent_message):
     print()
     print(intent_message.intent.intent_name)
     print(intent_message.slots.window_devices[0].slot_value.value.value)
-    print(intent_message.slots.state[0].slot_value.value.value)
+    if intent_message.slots.state:
+        d_ouv=(intent_message.slots.state[0].slot_value.value.value).encode('utf-8')
 
     if intent_message.intent.intent_name == "valf:OpenCoverJeedom":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
             if intent_message.slots.state:
-                if intent_message.slots.state[0].slot_value.value.value == u"à moitié":
+                if d_ouv == u"à moitié":
                     r = requests.get("http://linuxfr.org/")
-                if intent_message.slots.state[0].slot_value.value.value == u"trois quart":
+                if d_ouv == u"trois quart":
                     r = requests.get("http://linuxfr.org/")
             else:
                 r = requests.get("http://linuxfr.org/")
