@@ -147,7 +147,7 @@ def intent_received(hermes, intent_message):
 
     if intent_message.intent.intent_name == "valf:OpenCoverJeedom":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
-            if intent_message.slots.window_state[0]:
+            if intent_message.slots.window_state:
                 if d_ouv == (u"un quart").encode('utf-8'):
                     requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Un_quart&var3=BureauE11",verify=False)
                 if d_ouv == (u"à moitié").encode('utf-8'):
