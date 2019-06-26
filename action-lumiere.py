@@ -149,11 +149,11 @@ def intent_received(hermes, intent_message):
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
             if intent_message.slots.state:
                 if d_ouv == (u"à moitié").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Moitie&var3=BureauE11")
+                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Moitie&var3=BureauE11",verify=False)
                 if d_ouv == (u"trois quart").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniservalListen?var1=VR&var2=Trois_quart&var3=BureauE11")
+                    requests.get("https://192.168.1.129:8443/UniservalListen?var1=VR&var2=Trois_quart&var3=BureauE11",verify=False)
             else:
-                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Haut&var3=BureauE11")
+                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Haut&var3=BureauE11",verify=False)
 
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
         hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
