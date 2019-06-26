@@ -143,6 +143,7 @@ def intent_received(hermes, intent_message):
     print(intent_message.slots.window_devices[0].slot_value.value.value)
     if intent_message.slots.state:
         d_ouv=(intent_message.slots.state[0].slot_value.value.value).encode('utf-8')
+        print(d_ouv)
 
     if intent_message.intent.intent_name == "valf:OpenCoverJeedom":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
