@@ -148,7 +148,7 @@ def intent_received(hermes, intent_message):
         d_ouv=(intent_message.slots.window_state[0].slot_value.value.value).encode('utf-8')
         print(d_ouv)
 
-    if intent_message.intent.intent_name == "valf:OpenCoverJeedom":
+    if intent_message.intent.intent_name == "TomTom830:OpenCoverJeedom":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
             if intent_message.slots.state:
                 if d_ouv == (u"un quart").encode('utf-8') or d_ouv == (u"Matthieu").encode('utf-8'):
