@@ -148,11 +148,11 @@ def intent_received(hermes, intent_message):
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
             if intent_message.slots.state:
                 if d_ouv == u"à moitié":
-                    r = requests.get("http://linuxfr.org/")
+                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Moitie&var3=BureauE11")
                 if d_ouv == u"trois quart":
-                    r = requests.get("http://linuxfr.org/")
+                    requests.get("https://192.168.1.129:8443/UniservalListen?var1=VR&var2=Trois_quart&var3=BureauE11")
             else:
-                r = requests.get("http://linuxfr.org/")
+                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Haut&var3=BureauE11")
 
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
         hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
