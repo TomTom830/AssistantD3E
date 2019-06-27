@@ -149,6 +149,7 @@ def intent_received(hermes, intent_message):
         print(d_ouv)
 
     if intent_message.intent.intent_name == "TomTom830:ModeScenario":
+        print(intent_message.slots.Mode[0].slot_value.value.value)
         if intent_message.slots.Mode[0].slot_value.value.value == "projection":
             requests.get("https://192.168.1.129:8443/UniversalListen?var1=Scenario&var2=Projection&var3=BureauE11",verify=False)
 
