@@ -148,6 +148,10 @@ def intent_received(hermes, intent_message):
         d_ouv=(intent_message.slots.window_state[0].slot_value.value.value).encode('utf-8')
         print(d_ouv)
 
+    if intent_message.intent.intent_name == "TomTom830:ModeScenario":
+        if intent_message.slots.Mode[0].slot_value.value.value == "projection":
+            requests.get("https://192.168.1.129:8443/UniversalListen?var1=Scenario&var2=Projection&var3=BureauE11",verify=False)
+
     if intent_message.intent.intent_name == "TomTom830:OpenCoverJeedom":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
             if intent_message.slots.state:
