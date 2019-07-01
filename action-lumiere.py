@@ -24,7 +24,7 @@ def init_wakeword(hermes):
     pixels.listen()
     print('WAKEWORD DETECTED')
 
-def end_session(hermes):
+def end_session(hermes,param):
     pixels.off();
     print('END OF THE SESSION')
 
