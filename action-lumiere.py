@@ -20,7 +20,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 pixels = pixel.Pixels()
 
-def init_wakeword(hermes):
+def init_wakeword(hermes,param):
     pixels.listen()
     print('WAKEWORD DETECTED')
 
