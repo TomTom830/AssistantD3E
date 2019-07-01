@@ -29,6 +29,7 @@ def end_session(hermes,param):
     print('END OF THE SESSION')
 
 def intent_received(hermes, intent_message):
+    pixels.think();
     print()
     print(intent_message.intent.intent_name)
     if intent_message.slots.window_devices:
