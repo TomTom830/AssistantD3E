@@ -136,8 +136,13 @@ class Pixels:
         self.dev.show()
 
 
+pixels = Pixels()
+
+def init_wakeword(hermes, intent_message):
+    pixels.listen()
+    print('WAKEWORD DETECTED')
+
 def intent_received(hermes, intent_message):
-    pixels = Pixels()
     print()
     print(intent_message.intent.intent_name)
     if intent_message.slots.window_devices:
@@ -191,4 +196,5 @@ def intent_received(hermes, intent_message):
 
 
 with Hermes(MQTT_ADDR) as h:
-    h.subscribe_intents(intent_received).start()
+    h.subscribe_intents(intent_received)\
+        .subscribe_session_started(init_wakeword).start()
