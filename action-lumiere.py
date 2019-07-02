@@ -41,6 +41,8 @@ def intent_received(hermes, intent_message):
         d_ouv = (intent_message.slots.window_state[0].slot_value.value.value).encode('utf-8')
     if intent_message.slots.percentage:
         d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
+    if intent_message.slots.closing_percent:
+        d_ouv = str(intent_message.slots.closing_percent[0].slot_value.value.value)
 
     if intent_message.intent.intent_name == "TomTom830:ModeScenario":
         print(intent_message.slots.Mode[0].slot_value.value.value)
@@ -57,7 +59,7 @@ def intent_received(hermes, intent_message):
 
     if intent_message.intent.intent_name == "TomTom830:CloseCover":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
-            if intent_message.slots.percentage:
+            if intent_message.slots.closing_percent:
                 requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9", verify=False)
 
             else:
