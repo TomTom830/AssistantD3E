@@ -40,6 +40,8 @@ def intent_received(hermes, intent_message):
     if intent_message.slots.window_state:
         d_ouv = (intent_message.slots.window_state[0].slot_value.value.value).encode('utf-8')
         print(d_ouv)
+    if intent_message.slots.percentage:
+        d_ouv = (intent_message.slots.percentage[0].slot_value.value.value).encode('utf-8')
 
     if intent_message.intent.intent_name == "TomTom830:ModeScenario":
         print(intent_message.slots.Mode[0].slot_value.value.value)
@@ -48,27 +50,20 @@ def intent_received(hermes, intent_message):
 
     if intent_message.intent.intent_name == "TomTom830:OpenCoverJeedom":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
-            if intent_message.slots.state:
-                if d_ouv == (u"un quart").encode('utf-8') or d_ouv == (u"Matthieu").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Un_quart&var3=BureauE11",verify=False)
-                if d_ouv == (u"à moitié").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Moitie&var3=BureauE11",verify=False)
-                if d_ouv == (u"trois quart").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Trois_quart&var3=BureauE11",verify=False)
+            if intent_message.slots.percentage:
+                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9", verify=False)
+
             else:
-                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Haut&var3=BureauE11",verify=False)
+                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=0&var3=BureauR8R9", verify=False)
 
     if intent_message.intent.intent_name == "TomTom830:CloseCover":
         if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
-            if intent_message.slots.window_state:
-                if d_ouv == (u"un quart").encode('utf-8') or d_ouv == (u"Matthieu").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Un_quart&var3=BureauE11",verify=False)
-                if d_ouv == (u"à moitié").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Moitie&var3=BureauE11",verify=False)
-                if d_ouv == (u"trois quart").encode('utf-8'):
-                    requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Trois_quart&var3=BureauE11",verify=False)
-            else :
-                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=Bas&var3=BureauE11",verify=False)
+            if intent_message.slots.percentage:
+                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9", verify=False)
+
+            else:
+                requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=100&var3=BureauR8R9", verify=False)
+
 
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
         hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
