@@ -39,9 +39,8 @@ def intent_received(hermes, intent_message):
         print(d_ouv)
     if intent_message.slots.window_state:
         d_ouv = (intent_message.slots.window_state[0].slot_value.value.value).encode('utf-8')
-        print(d_ouv)
     if intent_message.slots.percentage:
-        d_ouv = (intent_message.slots.percentage[0].slot_value.value.value).encode('utf-8')
+        d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
 
     if intent_message.intent.intent_name == "TomTom830:ModeScenario":
         print(intent_message.slots.Mode[0].slot_value.value.value)
@@ -67,11 +66,11 @@ def intent_received(hermes, intent_message):
 
     if intent_message.intent.intent_name == "TomTom830:lightsSet":
         hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière")
-        requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2=Allumer&var3=BureauE11",verify=False)
+        requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2=Allumer&var3=BureauE11", verify=False)
         pixels.wakeup()
     if intent_message.intent.intent_name == "bluevert:lightsTurnOff":
         hermes.publish_end_session(intent_message.session_id, u"J'éteind la lumière")
-        requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2=Eteindre&var3=BureauE11",verify=False)
+        requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2=Eteindre&var3=BureauE11", verify=False)
         pixels.off()
     print()
 
