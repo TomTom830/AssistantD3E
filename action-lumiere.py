@@ -39,10 +39,13 @@ def intent_received(hermes, intent_message):
         print(d_ouv)
     if intent_message.slots.window_state:
         d_ouv = (intent_message.slots.window_state[0].slot_value.value.value).encode('utf-8')
+        print(d_ouv)
     if intent_message.slots.percentage:
         d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
+        print(d_ouv)
     if intent_message.slots.closing_percent:
         d_ouv = str(intent_message.slots.closing_percent[0].slot_value.value.value)
+        print(d_ouv)
 
     if intent_message.intent.intent_name == "TomTom830:ModeScenario":
         print(intent_message.slots.Mode[0].slot_value.value.value)
@@ -77,6 +80,11 @@ def intent_received(hermes, intent_message):
     print()
 
 
+    if intent_message.intent.intent_name == "valf:lightSetJeedom":
+        d_lum = str(intent_message.slots.intensity_percent[0].slot.value.value)
+        print(d_lum)
+        requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
+        hermes.publish_end_session(intent_message.session_id, u"Je mets la lumière à "+d_lum[:2]+u" pourcent")
 
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intents(intent_received)\
