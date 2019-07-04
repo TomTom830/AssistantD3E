@@ -80,7 +80,7 @@ def intent_received(hermes, intent_message):
     print()
 
 
-    if intent_message.intent.intent_name == "valf:lightSetJeedom":
+    if intent_message.intent.intent_name == "valf:lightsSetJeedom":
         d_lum = str(intent_message.slots.intensity_percent[0].slot_value.value.value)
         print(d_lum)
         requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
