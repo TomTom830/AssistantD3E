@@ -18,7 +18,7 @@ MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 INTENT_SET_LIGHT = "valf:lightsSetJeedom"
-INTENT_TURNON_LIGHT = "TomTom830:lightsSet"
+INTENT_TURNON_LIGHT = "valf:lightsSetJeedom"
 INTENT_OPEN_BLINDS = "TomTom830:OpenCoverJeedom"
 INTENT_CLOSE_BLINDS = "TomTom830:CloseCover"
 INTENT_MODE = "TomTom830:ModeScenario"
