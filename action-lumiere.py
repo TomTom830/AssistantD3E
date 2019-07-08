@@ -91,7 +91,8 @@ def intent_received(hermes, intent_message):
         d_lum = str(intent_message.slots.intensity_percent[0].slot_value.value.value)
         print(d_lum)
         requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
-        hermes.publish_continue_session(intent_message.session_id, u"Je mets la lumière à "+d_lum[:2]+u" pourcent", ALL_INTENTS)
+        #hermes.publish_start_session_notification(intent_message.site_id, u"Je mets la lumière à "+d_lum[:2]+u" %" )
+        hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intents(intent_received)\
