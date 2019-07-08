@@ -22,8 +22,9 @@ INTENT_TURNON_LIGHT = "valf:lightsSetJeedom"
 INTENT_OPEN_BLINDS = "TomTom830:OpenCoverJeedom"
 INTENT_CLOSE_BLINDS = "TomTom830:CloseCover"
 INTENT_MODE = "TomTom830:ModeScenario"
+INTENT_END = "TomTom830:EndDialogue"
 
-ALL_INTENTS = [INTENT_SET_LIGHT, INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INTENT_MODE]
+ALL_INTENTS = [INTENT_SET_LIGHT, INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INTENT_MODE,INTENT_END]
 
 pixels = pixel.Pixels()
 
@@ -93,6 +94,9 @@ def intent_received(hermes, intent_message):
         requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
         #hermes.publish_start_session_notification(intent_message.site_id, u"Je mets la lumière à "+d_lum[:2]+u" %" )
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+
+    if intent_message.intent.intent_name == "TomTom830:EndDialogue":
+        hermes.publish_end_session(intent_message.session_id, u"Au revoir")
 
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intents(intent_received)\
