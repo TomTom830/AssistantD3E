@@ -89,6 +89,7 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("TomTom830:EndDialogue", finDialogue)\
         .subscribe_intent("TomTom830:CloseCover", fermeStore)\
         .subscribe_intent("TomTom830:OpenCoverJeedom", ouvreStore)\
-        .subscribe_intent("valf:lightsTurnOffJeedom", eteinsLumiere).subscribe_intent("TomTom830:ModeScenario", modeScenario)\
+        .subscribe_intent("valf:lightsTurnOffJeedom", eteinsLumiere)\
+        .subscribe_intent("TomTom830:ModeScenario", modeScenario)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
