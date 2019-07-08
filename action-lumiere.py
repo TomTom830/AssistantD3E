@@ -90,14 +90,13 @@ def intent_received(hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, u"Au revoir")
 
 def mettreLumiere(hermes, intent_message):
-    if intent_message.intent.intent_name == "valf:lightsSetJeedom":
-        if(intent_message.slots.intensity_percent):
-            d_lum = str(intent_message.slots.intensity_percent[0].slot_value.value.value)
-            print(d_lum)
-        else:
-            d_lum = 100
-        requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
-        hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+    if(intent_message.slots.intensity_percent):
+        d_lum = str(intent_message.slots.intensity_percent[0].slot_value.value.value)
+        print(d_lum)
+    else:
+        d_lum = 100
+    requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
+    hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intent("valf:lightsSetJeedom", mettreLumiere)\
