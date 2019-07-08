@@ -37,7 +37,7 @@ def ouvreStore(hermes, intent_message):
         if intent_message.slots.percentage:
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
-            d_ouv = 0
+            d_ouv = "0"
         requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9", verify=False)
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
@@ -47,7 +47,7 @@ def fermeStore(hermes, intent_message):
         if intent_message.slots.closing_percent:
             d_ouv = str(intent_message.slots.closing_percent[0].slot_value.value.value)
         else:
-            d_ouv = 100
+            d_ouv = "100"
         print(d_ouv)
         requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9", verify=False)
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
@@ -62,7 +62,7 @@ def mettreLumiere(hermes, intent_message):
         d_lum = str(intent_message.slots.intensity_percent[0].slot_value.value.value)
         print(d_lum)
     else:
-        d_lum = 100
+        d_lum = "100"
     requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
