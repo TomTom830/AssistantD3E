@@ -3,13 +3,10 @@
 
 import pixel
 import requests
-
-try:
-    import queue as Queue
-except ImportError:
-    import Queue as Queue
-
 from hermes_python.hermes import Hermes
+
+IP_LIFE_DOMUS = "192.168.1.129"
+PORT_LIFE_DOMUS = "8443"
 
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
@@ -41,7 +38,7 @@ def ouvreStore(hermes, intent_message):
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
             d_ouv = 0
-        requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9", verify=False)
+        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9", verify=False)
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def fermeStore(hermes, intent_message):
@@ -52,7 +49,7 @@ def fermeStore(hermes, intent_message):
         else:
             d_ouv = 100
         print(d_ouv)
-        requests.get("https://192.168.1.129:8443/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9", verify=False)
+        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9", verify=False)
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def finDialogue(hermes, intent_message):
@@ -66,12 +63,12 @@ def mettreLumiere(hermes, intent_message):
         print(d_lum)
     else:
         d_lum = 100
-    requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def eteinsLumiere(hermes, intent_message):
     pixels.think()
-    requests.get("https://192.168.1.129:8443/UniversalListen?var1=Eclairage&var2=0&var3=BureauR8R9",
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2=0&var3=BureauR8R9",
                  verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
@@ -79,7 +76,7 @@ def modeScenario(hermes, intent_message):
     pixels.think()
     print(intent_message.slots.Mode[0].slot_value.value.value)
     mode = intent_message.slots.Mode[0].slot_value.value.value
-    requests.get("https://192.168.1.129:8443/UniversalListen?var1=Scenario&var2="+mode+"&var3=BureauE11",verify=False)
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Scenario&var2="+mode+"&var3=BureauE11",verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 with Hermes(MQTT_ADDR) as h:
