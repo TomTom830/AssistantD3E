@@ -1,8 +1,6 @@
 #!/usr/bin/env python2
 # coding: utf-8
-"""
-LED light pattern like Google Home
-"""
+
 import pixel
 import requests
 
