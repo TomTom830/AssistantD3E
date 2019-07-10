@@ -115,6 +115,6 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("TomTom830:ModeScenario", modeScenario)\
         .subscribe_intent("valf:TvChannelJeedom", changeChaine)\
         .subscribe_intent("valf:VolumeUpJeedom", monteSon)\
-        .subscribe_intent("valf:VolumeDownJedom", baisseSon)\
+        .subscribe_intent("valf:VolumeDownJeedom", baisseSon)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
