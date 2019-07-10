@@ -21,9 +21,12 @@ INTENT_TURNON_LIGHT = "valf:lightsSetJeedom"
 INTENT_OPEN_BLINDS = "TomTom830:OpenCoverJeedom"
 INTENT_CLOSE_BLINDS = "TomTom830:CloseCover"
 INTENT_MODE = "TomTom830:ModeScenario"
+INTENT_CHANNEL = "valf:TvChannelJeedom"
+INTENT_VOLUME_UP = "valf:VolumeUpJeedom"
 INTENT_END = "TomTom830:EndDialogue"
 
-ALL_INTENTS = [INTENT_SET_LIGHT, INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INTENT_MODE,INTENT_END]
+ALL_INTENTS = [INTENT_SET_LIGHT, INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INTENT_MODE,INTENT_END,
+               INTENT_CHANNEL, INTENT_VOLUME_UP]
 
 pixels = pixel.Pixels()
 
@@ -84,6 +87,17 @@ def changeChaine(hermes, intent_message):
     requests.get("http://{}:{}/remoteControl/cmd?operation=09&epg_id={}&uui=1".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE, channel_int))
 
+def monteSon(hermes, intent_message):
+    pixels.think()
+    print("Je monte le son")
+    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=115&mode=0".
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+
+def baisseSon(hermes, intent_message):
+    pixels.think()
+    print("je baisse le son")
+    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=114&mode=0".
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
 
 def modeScenario(hermes, intent_message):
     pixels.think()
@@ -100,5 +114,7 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("valf:lightsTurnOffJeedom", eteinsLumiere)\
         .subscribe_intent("TomTom830:ModeScenario", modeScenario)\
         .subscribe_intent("valf:TvChannelJeedom", changeChaine)\
+        .subscribe_intent("valf:VolumeUpJeedom", monteSon)\
+        .subscribe_intent("valf:VolumeDownJedom", baisseSon)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
