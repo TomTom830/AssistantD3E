@@ -96,13 +96,14 @@ def monteSon(hermes, intent_message):
 def baisseSon(hermes, intent_message):
     pixels.think()
     print("je baisse le son")
-    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=393&mode=0".
+    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=114&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
 
 def allerReplay(hermes, intent_message):
     pixels.think()
     print("je vais dans le replay")
-    requests.get()
+    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=393&mode=0".
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
 
 def modeScenario(hermes, intent_message):
     pixels.think()
