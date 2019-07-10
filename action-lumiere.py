@@ -80,7 +80,7 @@ def changeChaine(hermes, intent_message):
     pixels.think()
     channel = str(intent_message.slots.channel[0].slot_value.value.value)
     channel_int = tvc.convert_channel(channel)
-    print(u"on met chaîne {}".format(channel_int))
+    print("on met chaine {}".format(str(channel_int)))
     requests.get("http://{}:{}/remoteControl/cmd?operation=09&epg_id={}&uui=1".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE, channel_int))
 
