@@ -3,10 +3,14 @@
 
 import pixel
 import requests
+import tvchannel as tvc
 from hermes_python.hermes import Hermes
 
 IP_LIFE_DOMUS = "192.168.1.129"
 PORT_LIFE_DOMUS = "8443"
+
+IP_DECODEUR_ORANGE = "192.168.1.24"
+PORT_DECODEUR_ORANGE = "8080"
 
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
@@ -72,6 +76,15 @@ def eteinsLumiere(hermes, intent_message):
                  verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
+def changeChaine(hermes, intent_message):
+    pixels.think()
+    channel = str(intent_message.slots.channel[0].slot_value.value.value)
+    channel_int = tvc.convert_channel(channel)
+    print(u"on met chaîne {}".format(channel_int))
+    requests.get("http://{}:{}/remoteControl/cmd?operation=09&epg_id={}&uui=1".
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE, channel_int))
+
+
 def modeScenario(hermes, intent_message):
     pixels.think()
     print(intent_message.slots.Mode[0].slot_value.value.value)
@@ -86,5 +99,6 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("TomTom830:OpenCoverJeedom", ouvreStore)\
         .subscribe_intent("valf:lightsTurnOffJeedom", eteinsLumiere)\
         .subscribe_intent("TomTom830:ModeScenario", modeScenario)\
+        .subscribe_intent("valf:TvChannelJeedom", changeChaine)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
