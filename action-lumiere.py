@@ -99,10 +99,22 @@ def baisseSon(hermes, intent_message):
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=114&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
 
+def coupeSon(hermes, intent_message):
+    pixels.think()
+    print("Je coupe le son")
+    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=113&mode=0".
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+
 def allerReplay(hermes, intent_message):
     pixels.think()
     print("je vais dans le replay")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=393&mode=0".
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+
+def revenirOrange(hermes, intent_message):
+    pixels.think()
+    print("Je reviens avant")
+    requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=158&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
 
 def modeScenario(hermes, intent_message):
@@ -123,5 +135,7 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("valf:VolumeUpJeedom", monteSon)\
         .subscribe_intent("valf:VolumeDownJeedom", baisseSon)\
         .subscribe_intent("TomTom830:GoToReplay", allerReplay)\
+        .subscribe_intent("TomTom830:GoBackOrange", revenirOrange)\
+        .subscribe_intent("valf:VolumeMuteJeedom", coupeSon)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
