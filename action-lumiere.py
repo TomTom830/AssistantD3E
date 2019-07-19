@@ -51,7 +51,8 @@ def ouvreStore(hermes, intent_message):
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
             d_ouv = "0"
-        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9", verify=False)
+        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9",
+                     timeout=5, verify=False)
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def fermeStore(hermes, intent_message):
@@ -62,7 +63,8 @@ def fermeStore(hermes, intent_message):
         else:
             d_ouv = "100"
         print(d_ouv)
-        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9", verify=False)
+        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9",
+                     timeout=5, verify=False)
         hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def finDialogue(hermes, intent_message):
@@ -76,13 +78,14 @@ def mettreLumiere(hermes, intent_message):
         print(d_lum)
     else:
         d_lum = "100"
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9", verify=False)
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9",
+                 timeout=5, verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def eteinsLumiere(hermes, intent_message):
     pixels.think()
     requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2=0&var3=BureauR8R9",
-                 verify=False)
+                 verify=False, timeout=5)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def changeChaine(hermes, intent_message):
@@ -91,44 +94,50 @@ def changeChaine(hermes, intent_message):
     channel_int = tvc.convert_channel(channel)
     print("on met chaine {}".format(str(channel_int)))
     requests.get("http://{}:{}/remoteControl/cmd?operation=09&epg_id={}&uui=1".
-                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE, channel_int))
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE, channel_int), timeout=5)
 
 def monteSon(hermes, intent_message):
     pixels.think()
     print("Je monte le son")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=115&mode=0".
-                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
 
 def baisseSon(hermes, intent_message):
     pixels.think()
     print("je baisse le son")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=114&mode=0".
-                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
 
 def coupeSon(hermes, intent_message):
     pixels.think()
     print("Je coupe le son")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=113&mode=0".
-                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
 
 def allerReplay(hermes, intent_message):
     pixels.think()
     print("je vais dans le replay")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=393&mode=0".
-                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
 
 def revenirOrange(hermes, intent_message):
     pixels.think()
     print("Je reviens avant")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=158&mode=0".
-                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE))
+                 format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
 
 def modeScenario(hermes, intent_message):
     pixels.think()
     print(intent_message.slots.Mode[0].slot_value.value.value)
     mode = intent_message.slots.Mode[0].slot_value.value.value
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Scenario&var2="+mode+"&var3=BureauE11",verify=False)
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Scenario&var2="+mode+"&var3=BureauE11",
+                 timeout=5, verify=False)
     hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+
+def ErrorIntent(hermes):
+    pixels.colors = [255, 0, 0, 255, 0, 0, 255, 0, 0]
+    pixels.speak()
+
 
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intent("valf:lightsSetJeedom", mettreLumiere)\
@@ -143,5 +152,6 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("TomTom830:GoToReplay", allerReplay)\
         .subscribe_intent("TomTom830:GoBackOrange", revenirOrange)\
         .subscribe_intent("valf:VolumeMuteJeedom", coupeSon)\
+        .subscribe_intent_not_recognized(ErrorIntent)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
