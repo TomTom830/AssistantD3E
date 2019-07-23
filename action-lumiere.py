@@ -112,7 +112,7 @@ def baisseSon(hermes, intent_message):
 
 def coupeSon(hermes, intent_message):
     pixels.think()
-    print("Je coupe le son")
+    print("Je coupe le son test")
     print("valeur du session_id : {}".format(intent_message.session_id))
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=113&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
