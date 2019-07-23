@@ -101,19 +101,19 @@ def monteSon(hermes, intent_message):
     print("Je monte le son")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=115&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
-    print("valeur du session_id : {}".format(intent_message.session_id))
+    print("valeur du session_id : {}".format(intent_message.site_id))
 
 def baisseSon(hermes, intent_message):
     pixels.think()
     print("je baisse le son")
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=114&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
-    print("valeur du session_id : {}".format(intent_message.session_id))
+    print("valeur du session_id : {}".format(intent_message.site_id))
 
 def coupeSon(hermes, intent_message):
     pixels.think()
     print("Je coupe le son test")
-    print("valeur du session_id : {}".format(intent_message.session_id))
+    print("valeur du session_id : {}".format(intent_message.site_id))
     requests.get("http://{}:{}/remoteControl/cmd?operation=01&key=113&mode=0".
                  format(IP_DECODEUR_ORANGE, PORT_DECODEUR_ORANGE), timeout=5)
 
