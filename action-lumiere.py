@@ -65,7 +65,8 @@ def fermeStore(hermes, intent_message):
         print(d_ouv)
         requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9",
                      timeout=5, verify=False)
-        hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+        hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
+        #hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
 
 def finDialogue(hermes, intent_message):
     pixels.think()
