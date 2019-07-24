@@ -51,9 +51,9 @@ def ouvreStore(hermes, intent_message):
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
             d_ouv = "0"
-        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3=BureauR8R9",
+        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
                      timeout=5, verify=False)
-        hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+        hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
 def fermeStore(hermes, intent_message):
     pixels.think()
@@ -63,14 +63,9 @@ def fermeStore(hermes, intent_message):
         else:
             d_ouv = "100"
         print(d_ouv)
-        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=BureauR8R9",
+        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
                      timeout=5, verify=False)
         hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
-        #hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
-
-def finDialogue(hermes, intent_message):
-    pixels.think()
-    hermes.publish_end_session(intent_message.session_id, u"Au revoir")
 
 def mettreLumiere(hermes, intent_message):
     pixels.think()
@@ -79,15 +74,16 @@ def mettreLumiere(hermes, intent_message):
         print(d_lum)
     else:
         d_lum = "100"
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3=BureauR8R9",
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3="+intent_message.site_id,
                  timeout=5, verify=False)
-    hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+    hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière dans le " + intent_message.site_id)
 
 def eteinsLumiere(hermes, intent_message):
     pixels.think()
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2=0&var3=BureauR8R9",
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2=0&var3="+intent_message.site_id,
                  verify=False, timeout=5)
-    hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+    hermes.publish_end_session(intent_message.session_id, u"J'éteins la lumière dans le "+intent_message.site_id)
+
 
 def changeChaine(hermes, intent_message):
     pixels.think()
@@ -134,9 +130,9 @@ def modeScenario(hermes, intent_message):
     pixels.think()
     print(intent_message.slots.Mode[0].slot_value.value.value)
     mode = intent_message.slots.Mode[0].slot_value.value.value
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Scenario&var2="+mode+"&var3=BureauE11",
+    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Scenario&var2="+mode+"&var3="+intent_message.site_id,
                  timeout=5, verify=False)
-    hermes.publish_continue_session(intent_message.session_id, u"Autre choses ?", ALL_INTENTS)
+    hermes.publish_end_session(intent_message.session_id, u"Je mets le mode "+mode+u"dans le "+intent_message.site_id)
 
 def ErrorIntent(hermes):
     pixels.colors = [255, 0, 0, 255, 0, 0, 255, 0, 0]
@@ -145,7 +141,6 @@ def ErrorIntent(hermes):
 
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intent("valf:lightsSetJeedom", mettreLumiere)\
-        .subscribe_intent("TomTom830:EndDialogue", finDialogue)\
         .subscribe_intent("TomTom830:CloseCover", fermeStore)\
         .subscribe_intent("TomTom830:OpenCoverJeedom", ouvreStore)\
         .subscribe_intent("valf:lightsTurnOffJeedom", eteinsLumiere)\
