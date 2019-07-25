@@ -4,6 +4,7 @@
 import pixel
 import requests
 import tvchannel as tvc
+import temp_sensor as temperature
 from hermes_python.hermes import Hermes
 
 IP_LIFE_DOMUS = "192.168.1.129"
@@ -43,6 +44,15 @@ def begin_session(hermes,param):
 def end_session(hermes,param):
     pixels.off();
     print('END OF THE SESSION')
+
+def donneTemperature(hermes, intent_message):
+    sensor = temperature.GroveTemperatureHumiditySensorSHT3x()
+
+    temp, humidity = sensor.read()
+    print('Temperature in Celsius is {:.2f} C'.format(temp))
+    print('Relative Humidity is {:.2f} %'.format(humidity))
+
+    hermes.publish_end_session(intent_message.session_id, u"Il fait " + temp + u" degrés")
 
 def ouvreStore(hermes, intent_message):
     pixels.think()
@@ -151,6 +161,7 @@ with Hermes(MQTT_ADDR) as h:
         .subscribe_intent("TomTom830:GoToReplay", allerReplay)\
         .subscribe_intent("TomTom830:GoBackOrange", revenirOrange)\
         .subscribe_intent("valf:VolumeMuteJeedom", coupeSon)\
+        .subscribe_intent("valf:EntityStateValueJeedom", donneTemperature)\
         .subscribe_intent_not_recognized(ErrorIntent)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
