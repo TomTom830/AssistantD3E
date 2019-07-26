@@ -1,3 +1,4 @@
 requests
 hermes_python>=0.1
 spidev
+grove.py
