@@ -52,7 +52,7 @@ def donneTemperature(hermes, intent_message):
     print('Temperature in Celsius is {:.2f} C'.format(temp))
     print('Relative Humidity is {:.2f} %'.format(humidity))
 
-    hermes.publish_end_session(intent_message.session_id, u"Il fait " + temp + u" degrés")
+    hermes.publish_end_session(intent_message.session_id, "Il fait {} degrai".format(temp))
 
 def ouvreStore(hermes, intent_message):
     pixels.think()

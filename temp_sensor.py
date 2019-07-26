@@ -74,18 +74,3 @@ class GroveTemperatureHumiditySensorSHT3x(object):
 
 
 Grove = GroveTemperatureHumiditySensorSHT3x
-
-
-def main():
-    sensor = GroveTemperatureHumiditySensorSHT3x()
-    while True:
-        temperature, humidity = sensor.read()
-
-        print('Temperature in Celsius is {:.2f} C'.format(temperature))
-        print('Relative Humidity is {:.2f} %'.format(humidity))
-
-        time.sleep(1)
-
-
-if __name__ == "__main__":
-    main()
