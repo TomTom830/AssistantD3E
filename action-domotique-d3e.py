@@ -192,17 +192,17 @@ def revenirOrange(hermes, intent_message):
 # a dire une fonction qui s execute lorsque le wakeword est entendu
 # On associe egalement une fonction appelee a chaque fin de session "end_session"
 with Hermes(MQTT_ADDR) as h:
-    h.subscribe_intent("valf:lightsSet", mettreLumiere)\
+    h.subscribe_intent("TomTom830:ThelightsSet", mettreLumiere)\
         .subscribe_intent("TomTom830:CloseCover", fermeStore)\
         .subscribe_intent("TomTom830:OpenCover", ouvreStore)\
-        .subscribe_intent("valf:lightsTurnOff", eteinsLumiere)\
+        .subscribe_intent("TomTom830:TurnOff", eteinsLumiere)\
         .subscribe_intent("TomTom830:ModeScenario", modeScenario)\
-        .subscribe_intent("valf:TvChannel", changeChaine)\
-        .subscribe_intent("valf:VolumeUp", monteSon)\
-        .subscribe_intent("valf:VolumeDown", baisseSon)\
+        .subscribe_intent("TomTom830:TvChannel", changeChaine)\
+        .subscribe_intent("TomTom830:VolumeUp", monteSon)\
+        .subscribe_intent("TomTom830:VolumeDown", baisseSon)\
         .subscribe_intent("TomTom830:GoToReplay", allerReplay)\
         .subscribe_intent("TomTom830:GoBackOrange", revenirOrange)\
-        .subscribe_intent("valf:VolumeMute", coupeSon)\
-        .subscribe_intent("valf:EntityStateValue", donneTemperature)\
+        .subscribe_intent("TomTom830:VolumeMute", coupeSon)\
+        .subscribe_intent("TomTom830:EntityStateValue", donneTemperature)\
         .subscribe_session_started(begin_session)\
         .subscribe_session_ended(end_session).start()
