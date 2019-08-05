@@ -188,9 +188,9 @@ def revenirOrange(hermes, intent_message):
 
 # Ici on associe a chaque intent une fonction qui sera chargera de traiter cet
 # intent
-# On associe egalement une fonction qui est appelee a chaque debut de session c est
+# On associe egalement une fonction qui est appelee a chaque debut de session "begin_session" c est
 # a dire une fonction qui s execute lorsque le wakeword est entendu
-# On associe egalement une fonction appelee a chaque fin de session
+# On associe egalement une fonction appelee a chaque fin de session "end_session"
 with Hermes(MQTT_ADDR) as h:
     h.subscribe_intent("valf:lightsSet", mettreLumiere)\
         .subscribe_intent("TomTom830:CloseCover", fermeStore)\
