@@ -26,23 +26,22 @@ MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 #On repertorie tous les intents
-INTENT_SET_LIGHT = "valf:lightsSet"
-INTENT_TURNON_LIGHT = "valf:lightsSet"
+INTENT_TURNON_LIGHT = "TomTom830:ThelightsSet"
+INTENT_TURNOFF_LIGHT = "TomTom830:TurnOff"
 INTENT_OPEN_BLINDS = "TomTom830:OpenCover"
 INTENT_CLOSE_BLINDS = "TomTom830:CloseCover"
 INTENT_MODE = "TomTom830:ModeScenario"
-INTENT_CHANNEL = "valf:TvChannel"
-INTENT_VOLUME_UP = "valf:VolumeUp"
-INTENT_VOLUME_DOWN = "valf:VolumeDown"
+INTENT_CHANNEL = "TomTom830:ThelightsSet:TvChannel"
+INTENT_VOLUME_UP = "TomTom830:ThelightsSet:VolumeUp"
+INTENT_VOLUME_DOWN = "TomTom830:ThelightsSet:VolumeDown"
 INTENT_REPLAY_ORANGE = "TomTom830:GoToReplay"
 INTENT_BACK_ORANGE = "TomTom830:GoBackOrange"
-INTENT_MUTE_ORANGE = "valf:VolumeMute"
-INTENT_END = "TomTom830:EndDialogue"
+INTENT_MUTE_ORANGE = "TomTom830:ThelightsSet:VolumeMute"
 
 
-ALL_INTENTS = [INTENT_SET_LIGHT, INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INTENT_MODE,
+ALL_INTENTS = [INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INTENT_MODE,
                INTENT_VOLUME_DOWN, INTENT_REPLAY_ORANGE, INTENT_CHANNEL, INTENT_VOLUME_UP, INTENT_BACK_ORANGE,
-               INTENT_MUTE_ORANGE, INTENT_END]
+               INTENT_MUTE_ORANGE]
 
 # Creation d un objet pixels qui va nous servir a lancer l animation des LEDs
 pixels = pixel.Pixels()
