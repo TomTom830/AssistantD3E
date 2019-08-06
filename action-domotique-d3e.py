@@ -13,6 +13,11 @@ import tvchannel as tvc
 import temp_sensor as temperature
 from hermes_python.hermes import Hermes
 
+import asyncio
+from xknx import XKNX
+from xknx.devices import Light, Cover
+
+
 #IP et PORT du module LifeDomus
 IP_LIFE_DOMUS = "192.168.1.129"
 PORT_LIFE_DOMUS = "8443"
@@ -46,6 +51,15 @@ ALL_INTENTS = [INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INT
 # Creation d un objet pixels qui va nous servir a lancer l animation des LEDs
 pixels = pixel.Pixels()
 
+xknx = XKNX(config='xknx.yaml')
+
+cover = Cover(xknx,'TestCover',
+                  group_address_position='13/2/14',
+                  travel_time_down=50,
+                  travel_time_up=60,
+                  invert_position=True,
+                  invert_angle=False)
+
 # Fonction appelee des que le wakeword est detecte
 def begin_session(hermes,param):
     pixels.listen()
@@ -70,15 +84,28 @@ def donneTemperature(hermes, intent_message):
 # Action associee a l intent ouvrir le store
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
-def ouvreStore(hermes, intent_message):
+async def ouvreStore(hermes, intent_message):
     pixels.think()
+
+    await xknx.start()
+
     if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
         if intent_message.slots.percentage:
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
             d_ouv = "0"
-        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
-                     timeout=5, verify=False)
+
+
+
+        await cover.set_position(int(d_ouv))
+
+        await xknx.stop()
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(ouvreStore())
+        loop.close()
+
+        #requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
+        #            timeout=5, verify=False)
         hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
 # Action associee a l intent fermer le store
