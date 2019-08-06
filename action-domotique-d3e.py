@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3.5
 # coding: utf-8
 
 # pixel : contient des animations pour les LEDs de la carte Respeaker 2-mics
