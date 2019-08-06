@@ -86,20 +86,26 @@ def donneTemperature(hermes, intent_message):
 # et termine par un message vocale
 async def ouvreStore(hermes, intent_message):
     pixels.think()
-
+    i=0
+    print("flag 1")
     await xknx.start()
-
+    print("flag 2")
     if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
         if intent_message.slots.percentage:
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
             d_ouv = "0"
 
-
+        print("flag 3")
 
         await cover.set_position(int(d_ouv))
 
+        print("flag 4")
+
         await xknx.stop()
+
+        print("flag 5")
+
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ouvreStore())
         loop.close()
