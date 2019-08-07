@@ -53,7 +53,7 @@ pixels = pixel.Pixels()
 
 xknx = XKNX()
 
-loop = asyncio.get_event_loop()
+#loop = asyncio.get_event_loop()
 
 cover = Cover(xknx,'TestCover',
                   group_address_position='13/2/14',
@@ -87,10 +87,10 @@ def donneTemperature(hermes, intent_message):
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
-    #print(loop)
+    loop = asyncio.get_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(ouvreStore_async(intent_message))
-    #loop.close()
+    loop.close()
 
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
@@ -107,7 +107,7 @@ async def ouvreStore_async(intent_message):
 
         print("flag 3")
 
-        await cover.set_position(int(d_ouv[-2]))
+        await cover.set_position(int(d_ouv[:-2]))
 
         print("flag 4")
 
