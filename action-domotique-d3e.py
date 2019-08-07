@@ -92,7 +92,25 @@ def ouvreStore(hermes, intent_message):
     #loop.run_until_complete(ouvreStore_async(intent_message))
     #loop.close()
 
-    asyncio.run(ouvreStore_async(intent_message))
+    pixels.think()
+    print("flag 1")
+    xknx.start()
+    print("flag 2")
+    if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
+        if intent_message.slots.percentage:
+            d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
+        else:
+            d_ouv = "0"
+
+        print("flag 3")
+
+        cover.set_position(int(d_ouv[:-2]))
+
+        print("flag 4")
+
+        xknx.stop()
+
+        print("flag 5")
 
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
