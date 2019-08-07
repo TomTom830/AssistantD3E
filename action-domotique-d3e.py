@@ -51,7 +51,7 @@ ALL_INTENTS = [INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INT
 # Creation d un objet pixels qui va nous servir a lancer l animation des LEDs
 pixels = pixel.Pixels()
 
-xknx = XKNX(config='xknx.yaml')
+xknx = XKNX()
 
 cover = Cover(xknx,'TestCover',
                   group_address_position='13/2/14',
@@ -85,10 +85,11 @@ def donneTemperature(hermes, intent_message):
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    result = loop.run_until_complete(ouvreStore_async(intent_message))
-    loop.close()
+    #loop = asyncio.new_event_loop()
+    #asyncio.set_event_loop(loop)
+    #result = loop.run_until_complete(ouvreStore_async(intent_message))
+    #loop.close()
+    asyncio.get_event_loop().run_until_complete(ouvreStore_async(intent_message))
 
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
