@@ -89,8 +89,9 @@ def ouvreStore(hermes, intent_message):
     #asyncio.set_event_loop(loop)
     #result = loop.run_until_complete(ouvreStore_async(intent_message))
     #loop.close()
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    #asyncio.set_event_loop(loop)
+    yield loop
     loop.run_until_complete(ouvreStore_async(intent_message))
 
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
