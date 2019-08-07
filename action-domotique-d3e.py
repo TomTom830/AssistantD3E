@@ -86,6 +86,11 @@ def donneTemperature(hermes, intent_message):
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
     ouvreStore_async(intent_message)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(ouvreStore_async(intent_message))
+    loop.close()
+
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
 async def ouvreStore_async(intent_message):
@@ -109,9 +114,6 @@ async def ouvreStore_async(intent_message):
 
         print("flag 5")
 
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(ouvreStore())
-        loop.close()
 
         #requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
         #            timeout=5, verify=False)
