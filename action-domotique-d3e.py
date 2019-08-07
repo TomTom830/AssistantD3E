@@ -85,8 +85,6 @@ def donneTemperature(hermes, intent_message):
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
-    ouvreStore_async(intent_message)
-
     loop = asyncio.get_event_loop()
     loop.run_until_complete(ouvreStore_async(intent_message))
     loop.close()
