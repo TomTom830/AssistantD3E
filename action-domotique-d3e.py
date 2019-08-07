@@ -84,9 +84,12 @@ def donneTemperature(hermes, intent_message):
 # Action associee a l intent ouvrir le store
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
-async def ouvreStore(hermes, intent_message):
+def ouvreStore(hermes, intent_message):
+    ouvreStore_async(intent_message)
+    hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
+
+async def ouvreStore_async(intent_message):
     pixels.think()
-    i=0
     print("flag 1")
     await xknx.start()
     print("flag 2")
@@ -112,7 +115,6 @@ async def ouvreStore(hermes, intent_message):
 
         #requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
         #            timeout=5, verify=False)
-        hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
 # Action associee a l intent fermer le store
 # L'algorithme est me même que pour la fonction précédente
