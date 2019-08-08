@@ -5,11 +5,11 @@ VENV=venv
 if [ ! -d "$VENV" ]
 then
 
-    PYTHON=`which python3.7`
+    PYTHON=`which python3.5`
 
     if [ ! -f $PYTHON ]
     then
-        echo "could not find python 3.7"
+        echo "could not find python 3.5"
     fi
     virtualenv -p $PYTHON $VENV
 

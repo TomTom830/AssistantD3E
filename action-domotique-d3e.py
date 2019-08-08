@@ -12,6 +12,8 @@ import requests
 import tvchannel as tvc
 import temp_sensor as temperature
 from hermes_python.hermes import Hermes
+import test_knx
+from contextvars import ContextVar
 
 import asyncio
 from xknx import XKNX
@@ -53,6 +55,10 @@ pixels = pixel.Pixels()
 
 xknx = XKNX()
 
+var_loop = ContextVar('var_loop')
+loop = asyncio.get_event_loop()
+
+
 cover = Cover(xknx,'TestCover',
                   group_address_position='13/2/14',
                   travel_time_down=50,
@@ -60,12 +66,11 @@ cover = Cover(xknx,'TestCover',
                   invert_position=True,
                   invert_angle=False)
 
-loop = asyncio.get_event_loop()
-#loop=0
 
 # Fonction appelee des que le wakeword est detecte
 def begin_session(hermes,param):
     pixels.listen()
+    #asyncio.set_event_loop(asyncio.new_event_loop())
     print('WAKEWORD DETECTED')
 
 # Fonction appelee a la fin d une requete vocale
@@ -88,13 +93,7 @@ def donneTemperature(hermes, intent_message):
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
-    global loop
-    print("loop closed = "+loop.is_closed() == True)
-    if loop.is_closed() == True :
-        loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(ouvreStore_async(intent_message))
-    loop.close()
+    test_knx.function()
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
 async def ouvreStore_async(intent_message):
