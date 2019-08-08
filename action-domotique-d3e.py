@@ -89,6 +89,7 @@ def donneTemperature(hermes, intent_message):
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
     global loop
+    print("loop closed = "+loop.is_closed() == True)
     if loop.is_closed() == True :
         loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
