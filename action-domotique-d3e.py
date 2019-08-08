@@ -61,11 +61,14 @@ cover = Cover(xknx,'TestCover',
                   invert_angle=False)
 
 loop = asyncio.get_event_loop()
+#loop=0
 
 # Fonction appelee des que le wakeword est detecte
 def begin_session(hermes,param):
     pixels.listen()
     loop = asyncio.get_event_loop()
+    #loop = asyncio.new_event_loop()
+    #asyncio.set_event_loop(loop)
     print('WAKEWORD DETECTED')
 
 # Fonction appelee a la fin d une requete vocale
