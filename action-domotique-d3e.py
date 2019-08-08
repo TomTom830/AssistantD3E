@@ -13,7 +13,6 @@ import tvchannel as tvc
 import temp_sensor as temperature
 from hermes_python.hermes import Hermes
 import test_knx
-from contextvars import ContextVar
 
 import asyncio
 from xknx import XKNX
@@ -93,7 +92,14 @@ def donneTemperature(hermes, intent_message):
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
-    test_knx.function()
+    if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
+        if intent_message.slots.percentage:
+            d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
+        else:
+            d_ouv = "0"
+
+        print("flag 3")
+    test_knx.function(int(d_ouv[:-2]))
     hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
 
 async def ouvreStore_async(intent_message):

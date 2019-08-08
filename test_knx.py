@@ -5,7 +5,7 @@ from xknx import XKNX
 from xknx.devices import Light, Cover
 
 
-async def la_fonction_async():
+async def la_fonction_async(d_o):
     """Connect to KNX/IP bus, switch on light, wait 2 seconds and switch of off again."""
     xknx = XKNX()
     await xknx.start()
@@ -24,7 +24,7 @@ async def la_fonction_async():
                   invert_position=True,
                   invert_angle=False)
 
-    await cover.set_position(70)
+    await cover.set_position(d_o)
     #await asyncio.sleep(15)
     #await cover.set_position(60)
 
@@ -32,9 +32,9 @@ async def la_fonction_async():
     await xknx.stop()
 
 
-def function():
+def function(deg_ouv):
     # pylint: disable=invalid-name
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     loop.run_until_complete(la_fonction_async())
     loop.close()
 
