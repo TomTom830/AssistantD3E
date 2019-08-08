@@ -105,6 +105,7 @@ def fermeStore(hermes, intent_message):
 # Elle fini par un message vocal qui
 def mettreLumiere(hermes, intent_message):
     pixels.think()
+    print("dans le mettreLumiere")
     if(intent_message.slots.intensity_percent):
         d_lum = str(intent_message.slots.intensity_percent[0].slot_value.value.value)
         print(d_lum)
@@ -196,7 +197,7 @@ def revenirOrange(hermes, intent_message):
 # a dire une fonction qui s execute lorsque le wakeword est entendu
 # On associe egalement une fonction appelee a chaque fin de session "end_session"
 with Hermes(MQTT_ADDR) as h:
-    h.subscribe_intent("TomTom830:ThelightsSet", mettreLumiere)\
+    h.subscribe_intent("TomTom830:TheLightsSet", mettreLumiere)\
         .subscribe_intent("TomTom830:CloseCover", fermeStore)\
         .subscribe_intent("TomTom830:OpenCover", ouvreStore)\
         .subscribe_intent("TomTom830:TurnOff", eteinsLumiere)\
