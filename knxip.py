@@ -2,20 +2,13 @@
 import asyncio
 
 from xknx import XKNX
-from xknx.devices import Light, Cover
+from xknx.devices import Cover
 
 
-async def la_fonction_async(d_o):
+async def controle_store_async(d_o):
     """Connect to KNX/IP bus, switch on light, wait 2 seconds and switch of off again."""
     xknx = XKNX()
     await xknx.start()
-    #light = Light(xknx,
-    #              name='TestLight',
-    #             group_address_switch='13/0/14')
-    #await light.set_on()
-    #await asyncio.sleep(2)
-    #await light.set_off()
-
     cover = Cover(xknx,
                   'TestCover',
                   group_address_position='13/2/14',
@@ -25,16 +18,12 @@ async def la_fonction_async(d_o):
                   invert_angle=False)
 
     await cover.set_position(d_o)
-    #await asyncio.sleep(15)
-    #await cover.set_position(60)
-
-
     await xknx.stop()
 
 
-def function(deg_ouv):
+def controle_store(deg_ouv):
     # pylint: disable=invalid-name
     loop = asyncio.new_event_loop()
-    loop.run_until_complete(la_fonction_async())
+    loop.run_until_complete(controle_store(deg_ouv))
     loop.close()
 

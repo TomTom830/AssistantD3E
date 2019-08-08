@@ -12,11 +12,7 @@ import requests
 import tvchannel as tvc
 import temp_sensor as temperature
 from hermes_python.hermes import Hermes
-import test_knx
-
-import asyncio
-from xknx import XKNX
-from xknx.devices import Light, Cover
+import knxip
 
 
 #IP et PORT du module LifeDomus
@@ -52,20 +48,6 @@ ALL_INTENTS = [INTENT_TURNON_LIGHT, INTENT_OPEN_BLINDS, INTENT_CLOSE_BLINDS, INT
 # Creation d un objet pixels qui va nous servir a lancer l animation des LEDs
 pixels = pixel.Pixels()
 
-xknx = XKNX()
-
-var_loop = ContextVar('var_loop')
-loop = asyncio.get_event_loop()
-
-
-cover = Cover(xknx,'TestCover',
-                  group_address_position='13/2/14',
-                  travel_time_down=50,
-                  travel_time_up=60,
-                  invert_position=True,
-                  invert_angle=False)
-
-
 # Fonction appelee des que le wakeword est detecte
 def begin_session(hermes,param):
     pixels.listen()
@@ -92,40 +74,16 @@ def donneTemperature(hermes, intent_message):
 # Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
 # et termine par un message vocale
 def ouvreStore(hermes, intent_message):
-    if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
-        if intent_message.slots.percentage:
-            d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
-        else:
-            d_ouv = "0"
-
-        print("flag 3")
-    test_knx.function(int(d_ouv[:-2]))
-    hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
-
-async def ouvreStore_async(intent_message):
     pixels.think()
-    print("flag 1")
-    await xknx.start()
-    print("flag 2")
     if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
         if intent_message.slots.percentage:
             d_ouv = str(intent_message.slots.percentage[0].slot_value.value.value)
         else:
             d_ouv = "0"
-
-        print("flag 3")
-
-        await cover.set_position(int(d_ouv[:-2]))
-
-        print("flag 4")
-
-        await xknx.stop()
-
-        print("flag 5")
-
-
-        #requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
-        #            timeout=5, verify=False)
+    d_ouv = int(d_ouv[:-2])
+    knxip.controle_store(d_ouv)
+    hermes.publish_end_session(intent_message.session_id, "J'ouvre le store à {} pourcent dans le {}"
+                               .format(d_ouv, intent_message.site_id))
 
 # Action associee a l intent fermer le store
 # L'algorithme est me même que pour la fonction précédente
@@ -136,10 +94,10 @@ def fermeStore(hermes, intent_message):
             d_ouv = str(intent_message.slots.closing_percent[0].slot_value.value.value)
         else:
             d_ouv = "100"
-        print(d_ouv)
-        requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=VR&var2="+d_ouv+"&var3="+intent_message.site_id,
-                     timeout=5, verify=False)
-        hermes.publish_end_session(intent_message.session_id, "Je ferme le store dans le " + intent_message.site_id)
+        d_ouv = int(d_ouv[:-2])
+        knxip.controle_store(d_ouv)
+        hermes.publish_end_session(intent_message.session_id, "Je ferme le store à {} pourcent dans le {}"
+                                   .format(d_ouv, intent_message.site_id))
 
 # Action associee a l intent allumer la lumiere
 # Cette fonction envoie une requete http GET en renseignant la piece
