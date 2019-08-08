@@ -24,6 +24,6 @@ async def controle_store_async(d_o):
 def controle_store(deg_ouv):
     # pylint: disable=invalid-name
     loop = asyncio.new_event_loop()
-    loop.run_until_complete(controle_store(deg_ouv))
+    loop.run_until_complete(controle_store_async(deg_ouv))
     loop.close()
 
