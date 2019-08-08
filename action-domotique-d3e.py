@@ -110,17 +110,18 @@ def mettreLumiere(hermes, intent_message):
         print(d_lum)
     else:
         d_lum = "100"
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2="+d_lum+"&var3="+intent_message.site_id,
-                 timeout=5, verify=False)
-    hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière dans le " + intent_message.site_id)
+    d_lum = float(d_lum[:-2])
+    d_lum = int((255*d_lum)/100)
+    knxip.controle_lumiere(d_lum)
+    hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière à {} pourcent dans le {}"
+                               .format(d_lum, intent_message.site_id))
 
 # Action associe l intent eteindre la lumiere
 # La fonction envoi une requete http GET avec une intensite lumineuse a 0 pourcent
 # dans la piece renseignee par le nom de site et termine par un message vocal
 def eteinsLumiere(hermes, intent_message):
     pixels.think()
-    requests.get("https://"+IP_LIFE_DOMUS+":"+PORT_LIFE_DOMUS+"/UniversalListen?var1=Eclairage&var2=0&var3="+intent_message.site_id,
-                 verify=False, timeout=5)
+    knxip.controle_lumiere(0)
     hermes.publish_end_session(intent_message.session_id, u"J'éteins la lumière dans le "+intent_message.site_id)
 
 
