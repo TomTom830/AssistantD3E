@@ -21,6 +21,7 @@ async def controle_store_async(d_o):
     await xknx.stop()
 
 
+#Fonction pour controler les store KNX
 def controle_store(deg_ouv):
     # pylint: disable=invalid-name
     loop = asyncio.new_event_loop()
