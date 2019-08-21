@@ -7,6 +7,9 @@
 # pour le decodeur Tv orange
 # temp_sensor : contient une classe Python utile pour utiliser le capteur de temperature
 # hermes_python.hermes : Permet l'utilisation du protocole hermes pour communiquer
+# knxip : contient les fonctions permettant de controler les automates avec le protocole knx
+# siteid_to_adressknx : contient une fonction qui retourne l'adresse de l'automate selon le lieu
+#                       et l'automate renseigne
 import pixel
 import requests
 import tvchannel as tvc
@@ -72,8 +75,10 @@ def donneTemperature(hermes, intent_message):
     hermes.publish_end_session(intent_message.session_id, "Il fait {:.1f} degrai".format(temp))
 
 # Action associee a l intent ouvrir le store
-# Cette fonction envoi une requete http get au module Lifedomus pour executer l'action
-# et termine par un message vocale
+# Cette fonction envoyait d'abord une requete http get au module Lifedomus pour executer l'action
+# puis avec la nouvelle solution elle envoi directement une requete knx ip sans passer par le
+# module Lifedomus grace a la fonction "controle_store" de knxip qui utilise une fonction asynchrone
+# la fonction se termine avec un message vocal
 def ouvreStore(hermes, intent_message):
     pixels.think()
     if intent_message.slots.window_devices[0].slot_value.value.value == "stores":
@@ -113,9 +118,13 @@ def fermeStore(hermes, intent_message):
                                    .format(d_ouv, intent_message.site_id))
 
 # Action associee a l intent allumer la lumiere
-# Cette fonction envoie une requete http GET en renseignant la piece
-# dans laquelle allumer la lumiere et l'intensite lumineuse de la lumiere
-# Elle fini par un message vocal qui
+# Cette fonction elle aussi implantait la premiere solution (puis mise en commentaire)
+# c est a dire l envoi d une requete http au module lifedomus pour controler les automates
+# elle envoi desormais elle meme la requete knxip aux automates en renseignant
+# l'intensite lumineuse de la lumiere
+# l'intensite lumineuse variant de 0 a 255 il faut convertir le pourcentage en
+# intensite lumineuse le resultat est stocke dans la variable d_lum
+# Elle fini par un message vocal
 def mettreLumiere(hermes, intent_message):
     pixels.think()
     print("dans le mettreLumiere")
@@ -137,8 +146,8 @@ def mettreLumiere(hermes, intent_message):
                                .format(d_lum, intent_message.site_id))
 
 # Action associe l intent eteindre la lumiere
-# La fonction envoi une requete http GET avec une intensite lumineuse a 0 pourcent
-# dans la piece renseignee par le nom de site et termine par un message vocal
+# Fonctionnement identique a la fonction precedente avec l intensite a 0
+# elle termine par un message vocal
 def eteinsLumiere(hermes, intent_message):
     pixels.think()
 
