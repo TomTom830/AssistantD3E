@@ -13,6 +13,7 @@ import tvchannel as tvc
 import temp_sensor as temperature
 from hermes_python.hermes import Hermes
 import knxip
+import siteid_to_adressknx
 
 
 #IP et PORT du module LifeDomus
@@ -81,7 +82,13 @@ def ouvreStore(hermes, intent_message):
         else:
             d_ouv = "0"
     d_ouv = int(d_ouv[:-2])
-    knxip.controle_store(d_ouv)
+
+    # requests.get(
+    #    "https://" + IP_LIFE_DOMUS + ":" + PORT_LIFE_DOMUS + "/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=" + intent_message.site_id,
+    #    timeout=5, verify=False)
+
+    adr_store = siteid_to_adressknx.convert_siteid_to_adressknx(intent_message.site_id, "store")
+    knxip.controle_store(d_ouv, adr_store, intent_message.site_id)
     hermes.publish_end_session(intent_message.session_id, "J'ouvre le store à {} pourcent dans le {}"
                                .format(d_ouv, intent_message.site_id))
 
@@ -95,7 +102,13 @@ def fermeStore(hermes, intent_message):
         else:
             d_ouv = "100"
         d_ouv = int(d_ouv[:-2])
-        knxip.controle_store(d_ouv)
+
+        # requests.get(
+        #    "https://" + IP_LIFE_DOMUS + ":" + PORT_LIFE_DOMUS + "/UniversalListen?var1=VR&var2=" + d_ouv + "&var3=" + intent_message.site_id,
+        #    timeout=5, verify=False)
+
+        adr_store = siteid_to_adressknx.convert_siteid_to_adressknx(intent_message.site_id, "store")
+        knxip.controle_store(d_ouv, adr_store, intent_message.site_id)
         hermes.publish_end_session(intent_message.session_id, "Je ferme le store à {} pourcent dans le {}"
                                    .format(d_ouv, intent_message.site_id))
 
@@ -113,7 +126,13 @@ def mettreLumiere(hermes, intent_message):
         d_lum = "100"
     d_lum = float(d_lum[:-2])
     d_lum = int((255*d_lum)/100)
-    knxip.controle_lumiere(d_lum)
+
+    #requests.get(
+    #    "https://" + IP_LIFE_DOMUS + ":" + PORT_LIFE_DOMUS + "/UniversalListen?var1=Eclairage&var2=" + d_lum + "&var3=" + intent_message.site_id,
+    #    timeout=5, verify=False)
+
+    adr_lum = siteid_to_adressknx.convert_siteid_to_adressknx(intent_message.site_id, "lumiere")
+    knxip.controle_lumiere(d_lum, adr_lum, intent_message.site_id)
     hermes.publish_end_session(intent_message.session_id, u"J'allume la lumière à {} pourcent dans le {}"
                                .format(d_lum, intent_message.site_id))
 
@@ -122,7 +141,13 @@ def mettreLumiere(hermes, intent_message):
 # dans la piece renseignee par le nom de site et termine par un message vocal
 def eteinsLumiere(hermes, intent_message):
     pixels.think()
-    knxip.controle_lumiere(0)
+
+    #requests.get(
+    #    "https://" + IP_LIFE_DOMUS + ":" + PORT_LIFE_DOMUS + "/UniversalListen?var1=Eclairage&var2=0&var3=" + intent_message.site_id,
+    #    timeout=5, verify=False)
+
+    adr_lum = siteid_to_adressknx.convert_siteid_to_adressknx(intent_message.site_id, "lumiere")
+    knxip.controle_lumiere(0, adr_lum, intent_message.site_id)
     hermes.publish_end_session(intent_message.session_id, u"J'éteins la lumière dans le "+intent_message.site_id)
 
 
